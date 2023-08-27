@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Logo from "@/public/img/logo.png";
 import LogoWhite from "@/public/img/logo-white.png";
 import { BsSearch } from "react-icons/bs";
@@ -12,6 +12,13 @@ import clsx from "clsx";
 export default function NavbarPage() {
   const [open, setOpen] = React.useState(true);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const toggleNavbar = useRef();
+
+  function handleOpen(e) {
+    if (!toggleNavbar.current.contains(e.target)) {
+      setOpen(true);
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,23 +29,24 @@ export default function NavbarPage() {
       }
     };
 
+    document.addEventListener("click", handleOpen);
     window.addEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
       className={clsx(
-        "h-[80px] py-4 px-8 top-[-100px] transition-all sticky text-white ",
+        " py-4 px-8 top-[-100px] transition-all sticky ",
         isScrolled &&
-          "sticky top-[-12px]  delay-500 bg-white/90 backdrop-blur-sm text-deep  "
+          "sticky top-[-12px] delay-500 bg-white/90 backdrop-blur-sm   "
       )}
     >
       <nav
         className={
-          "flex items-center gap-4 justify-center container mx-auto  max-lg:justify-between "
+          "flex items-center gap-4 justify-center container mx-auto  max-lg:justify-between relative "
         }
       >
-        <div className="lg:w-1/12 w-2/12 ">
+        <div className="lg:w-1/12 max-sm:w-3/12 w-2/12 ">
           {isScrolled ? (
             <Image src={Logo} alt="logo" className="w-full" />
           ) : (
@@ -47,28 +55,53 @@ export default function NavbarPage() {
         </div>
         <ul
           className={clsx(
-            "items-center lg:space-x-8 lg:w-8/12 max-lg:fixed lg:flex max-lg:top-[100px] transition-all max-lg:left-0 max-lg:bg-tersier w-[300px] lg:h-0 h-screen",
-            open && "max-lg:left-[-400px] "
+            "items-center lg:space-x-8 lg:w-8/12 max-lg:fixed lg:flex max-lg:top-[80px]  transition-all max-lg:left-0 max-lg:bg-tersier w-[300px] lg:h-0 h-screen ",
+            open && "max-lg:left-[-400px]  "
           )}
         >
-          <li className="py-8 px-12 lg:p-0">
+          <li
+            className={
+              !isScrolled
+                ? "py-8 px-12 lg:p-0 lg:text-white"
+                : "py-8 px-12 lg:p-0 text-black"
+            }
+          >
             <Link href="#sale">Fresh Sale</Link>
           </li>
-          <li className="flex gap-2 items-center py-8 px-12 lg:p-0">
+          <li
+            className={
+              !isScrolled
+                ? "flex gap-2 items-center py-8 px-12 lg:p-0 lg:text-white"
+                : "flex gap-2 items-center py-8 px-12 lg:p-0 text-black"
+            }
+          >
             <Link href="#kelas">Kelas</Link> <AiFillCaretDown size={12} />{" "}
           </li>
-          <li className="py-8 px-12 lg:p-0">
+          <li
+            className={
+              !isScrolled
+                ? "py-8 px-12 lg:p-0 lg:text-white"
+                : "py-8 px-12 lg:p-0 text-black"
+            }
+          >
             <Link href="#benefit">Benefit</Link>
           </li>
-          <li className="py-8 px-12 lg:p-0">
+          <li
+            className={
+              !isScrolled
+                ? "py-8 px-12 lg:p-0 lg:text-white"
+                : "py-8 px-12 lg:p-0 text-black"
+            }
+          >
             <Link href="#testimoni">Testimoni</Link>
           </li>
         </ul>
         <div
-          className={clsx(
-            "items-center  text-deep lg:space-x-4 max-lg:space-y-4 max-lg:fixed max-lg:top-[470px] max-lg:left-[30px] lg:flex max-lg:w-[200px] w-2/12 transition-all ",
-            open && "max-lg:left-[-200px] "
-          )}
+          className={
+            !open
+              ? "items-center  text-deep lg:space-x-4 max-lg:space-y-4 max-lg:fixed max-lg:top-[470px] max-lg:left-[30px] lg:flex max-lg:w-[200px] w-2/12 transition-all "
+              : "items-center  text-deep lg:space-x-4 max-lg:space-y-4 max-lg:fixed max-lg:top-[470px] max-lg:left-[30px] lg:flex max-lg:w-[200px] w-2/12 transition-all max-lg:hidden"
+          }
         >
           <div className="bg-tersier p-4 rounded-full cursor-pointer flex items-center gap-2">
             <BsSearch />
@@ -79,10 +112,21 @@ export default function NavbarPage() {
           </button>
         </div>
         <div
-          className="p-2 rounded-xl border-2 border-tersier  lg:hidden cursor-pointer"
-          onClick={() => setOpen(!open)}
+          ref={toggleNavbar}
+          className={
+            !isScrolled
+              ? "p-2 rounded-xl border-2 border-tersier  lg:hidden cursor-pointer"
+              : "p-2 rounded-xl border-2 border-deep/20  lg:hidden cursor-pointer"
+          }
+          onClick={(event) => {
+            event.stopPropagation();
+            setOpen(!open);
+          }}
         >
-          <BiMenu size={32} />
+          <BiMenu
+            size={32}
+            className={!isScrolled ? "text-white" : "text-deep"}
+          />
         </div>
       </nav>
     </header>
