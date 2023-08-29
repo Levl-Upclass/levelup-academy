@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
 import { categoryClass } from "@/lib/data";
-import Heading from "./components/heading";
+import Heading from "./heading";
 
 export default function CategorySection() {
   return (
@@ -16,8 +16,9 @@ export default function CategorySection() {
             Industries dan Freelancer
           </span>
         }
+        align={"sm:text-start"}
       />
-      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 grid-cols-1 max-sm:gap-y-4 md:gap-4 ">
+      <div className=" grid md:grid-cols-2 lg:grid-cols-4 grid-cols-1 max-sm:gap-y-4 md:gap-4 ">
         {categoryClass.map((item, index) => (
           <div
             key={index}

@@ -10,6 +10,7 @@ module.exports = {
       white: "#F6F8FD",
       deep: "#181230",
       primebase: "#457adf",
+      tersierbase: "#181230",
     },
   },
   content: [
